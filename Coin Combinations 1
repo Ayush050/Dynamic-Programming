@@ -1,0 +1,58 @@
+
+package DP;
+import java.util.*;
+public class CoinCombinationsI {
+ static int MOD=1000000007;
+ static int []dp;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub 
+		Scanner sc=new Scanner(System.in);
+		int n=sc.nextInt();
+		int x=sc.nextInt();
+		int []arr=new int[n];
+		for (int i = 0; i < arr.length; i++) {
+			arr[i]=sc.nextInt();
+		}  
+		
+		dp=new int[x+1];
+		Arrays.fill(dp, -1);
+
+		//System.out.println(iterativeDP(arr, x)%MOD);
+		System.out.println(memoization(arr, x));
+
+	}
+	public static int iterativeDP(int []arr,int x) {
+		int []dp=new int[x+1]; 
+		dp[0]=1;
+		 
+		for(int i=1;i<=x;i++) {
+			for(int j=0;j<arr.length;j++) {
+				if(arr[j]<=i) {
+				dp[i]=(dp[i]+dp[i-arr[j]])%MOD;
+				}
+			}
+		} 
+		
+		return dp[x]%MOD;
+	} 
+	
+	public static int memoization(int []arr,int x) {
+		if(x==0) {
+			return 1;
+		}
+		
+		if(dp[x]!=-1) {
+			return dp[x];
+			
+		} 
+		
+		int ans=0; 
+		for(int i=0;i<arr.length;i++) {
+			if(arr[i]<=x) {
+				ans=(ans+memoization(arr,x-arr[i]))%MOD;
+			}
+		} 
+		return dp[x]=ans%MOD;
+	}
+
+}
