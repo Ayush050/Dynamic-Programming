@@ -1,0 +1,71 @@
+package DP;
+import java.util.*;
+public class MinimizingCoins {
+static int []dp;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub 
+		Scanner sc=new Scanner(System.in); 
+		int n=sc.nextInt();  
+		int []arr=new int[n]; 
+		int x=sc.nextInt(); 
+		for (int i = 0; i < arr.length; i++) {
+			arr[i]=sc.nextInt();
+		}
+		
+		//System.out.println(iterativeDP(arr, n, x)); 
+		
+		dp=new int[x+1];
+		Arrays.fill(dp, -1);
+		int ans=memoization(arr, x);
+		if(ans<100000000) {
+			System.out.println(ans);
+		} 
+		else {
+			System.out.println(-1);
+		}
+
+	} 
+	
+	public static long iterativeDP(int []arr,int n, int x) {
+		 
+		int []dp=new int[x+1];
+		Arrays.fill(dp, 1000000000);
+		dp[0]=0;
+
+		
+		for(int i=1;i<=x;i++) {
+			for(int j=0;j<n;j++) {  
+				if(arr[j]<=i) {
+				  dp[i]=Math.min(dp[i], 1+dp[i-arr[j]]);
+				}
+			}
+		} 
+		
+		return dp[x]<1000000000?dp[x]:-1;
+		
+		
+	} 
+	
+	 public static int memoization(int []arr,int x){
+	        if(x==0){
+	            return 0;
+	        } 
+
+	        if(x<0){
+	            return 100000000;
+	        } 
+
+	        if(dp[x]!=-1){
+	            return dp[x];
+	        }
+
+	        int ans=100000000; 
+	        for(int i=0;i<arr.length;i++){
+	            ans=Math.min(ans,1+memoization(arr,x-arr[i]));
+	        } 
+
+	        return dp[x]=ans;
+	    }
+
+
+}
